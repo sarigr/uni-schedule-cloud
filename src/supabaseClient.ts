@@ -1,8 +1,8 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 // Vite env vars (set in .env / GitHub Pages secrets)
-const SUPABASE_URL = (import.meta as any).env?.VITE_SUPABASE_URL as string | undefined;
-const SUPABASE_ANON_KEY = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY as string | undefined;
+const supabaseUrl = "https://xskljsaknryzrspoayxs.supabase.co";
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
 
 export const hasSupabaseConfig = Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
 
