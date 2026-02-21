@@ -29,7 +29,7 @@ export function usernameToEmail(username: string) {
   const u = normalizeUsername(username);
   if (!u) return "";
   // Pseudo-email for Supabase auth (no real email required)
-  return `${u}@uni-schedule.local`;
+  return `${u}@example.com`;
 }
 
 export async function cloudSignUp(username: string, pin: string) {
