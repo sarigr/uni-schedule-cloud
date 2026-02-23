@@ -1164,16 +1164,12 @@ export default function App() {
   async function submitAuth() {
     if (!cloudEnabled) return;
 
-    const u = authUsername.trim();
+    const email = authUsername.trim().toLowerCase();
     const pin = authPin.trim();
-    if (!u) return setAuthError("Βάλε username.");
+    if (!email) return setAuthError("Βάλε email.");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return setAuthError("Μη έγκυρο email.");
     if (!/^\d{4,12}$/.test(pin)) return setAuthError("PIN: 4–12 ψηφία.");
 
-    // Reserve some usernames for safety
-    const lower = u.toLowerCase();
-    if (authMode === "signup" && (lower === "admin" || lower === "root")) {
-      return setAuthError("Αυτό το username είναι δεσμευμένο.");
-    }
 
     setAuthError("");
     try {
@@ -1181,14 +1177,14 @@ export default function App() {
       setCloudBanner(authMode === "signup" ? "Δημιουργία χρήστη…" : "Σύνδεση…");
 
       if (authMode === "signup") {
-        const res = await cloudSignUp(u, pin);
+        const res = await cloudSignUp(email, pin);
         // If email confirmation is ON, session may be null
         if (!res.session) {
           // try sign in anyway (works when email confirmation is OFF)
-          await cloudSignIn(u, pin);
+          await cloudSignIn(email, pin);
         }
       } else {
-        await cloudSignIn(u, pin);
+        await cloudSignIn(email, pin);
       }
     } catch (e: any) {
       setAuthError(e?.message || "Σφάλμα σύνδεσης/δημιουργίας χρήστη.");
@@ -1445,12 +1441,12 @@ export default function App() {
 
               <div className="formGrid">
                 <label>
-                  Username
+                  Email
                   <input
                     value={authUsername}
                     onChange={(e) => setAuthUsername(e.target.value)}
-                    placeholder="π.χ. thanasis"
-                    autoComplete="username"
+                    placeholder="π.χ. name@gmail.com"
+                    autoComplete="email"
                   />
                 </label>
 
